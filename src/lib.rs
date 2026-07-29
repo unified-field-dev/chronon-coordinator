@@ -29,7 +29,7 @@
 //!   discovery in host / UI server functions, independent of any running Chronon runtime
 //! - **Default-job bootstrap** — [`ensure_default_jobs_embedded`] (and the
 //!   [`register_default_jobs_embedded`] wrapper below) upsert every job discovered via
-//!   `#[chronon_macros_valence::script(..., default_job(...))]` inventory, so default jobs stay
+//!   `#[chronon_coordinator_macros::script(..., default_job(...))]` inventory, so default jobs stay
 //!   in sync as scripts are added, removed, or have their schedule attributes changed
 //!
 //! *One coordinator trait — the same product code administers and inspects Chronon jobs whether
@@ -92,7 +92,7 @@
 //! ## Bootstrap default jobs at boot
 //!
 //! Safe to call on every boot: existing rows are updated in place when a default job's schedule
-//! drifts from its `#[chronon_macros_valence::script(..., default_job(...))]` attributes.
+//! drifts from its `#[chronon_coordinator_macros::script(..., default_job(...))]` attributes.
 //!
 //! ```rust,ignore
 //! # async fn boot(
@@ -112,7 +112,7 @@
 //! | Build-and-persist in one chain | [`ScriptScheduler`] — [`JobBuilder`] bound to a backend |
 //! | Look up / run-now an existing job by name | [`typed_job_ref_for_script`] / [`TypedJobRef`] |
 //! | Discover scripts without a running backend | [`Scheduler`] — handle over the upstream [`ScriptRegistry`] |
-//! | Seed jobs at boot from `#[chronon_macros_valence::script]` inventory | [`ensure_default_jobs_embedded`] / [`register_default_jobs_embedded`] |
+//! | Seed jobs at boot from `#[chronon_coordinator_macros::script]` inventory | [`ensure_default_jobs_embedded`] / [`register_default_jobs_embedded`] |
 //!
 //! Older import path: [`models`].
 //!

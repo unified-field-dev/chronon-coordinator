@@ -68,7 +68,7 @@ mod default_job_registry {
     use super::DefaultJobDescriptor;
 
     quark::define_registry! {
-        /// All default job descriptors from `#[chronon_macros_valence::script(..., default_job(...))]`
+        /// All default job descriptors from `#[chronon_coordinator_macros::script(..., default_job(...))]`
         /// and manual `submit!`.
         pub struct DefaultJobRegistry for DefaultJobDescriptor;
     }
