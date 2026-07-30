@@ -6,7 +6,7 @@
 //! ([`chronon_scheduler::JobBuilder`]); this crate's [`JobBuilder`] wraps that API with Valence
 //! actor snapshots. Typed [`ScriptScheduler`] / [`TypedJobRef`] helpers and default-job bootstrap
 //! from link-time inventory sit on top. Swapping how jobs are persisted and run later is a
-//! backend swap, not a rewrite.
+//! backend swap.
 //!
 //! [Chronon]: https://github.com/unified-field-dev/chronon
 //!
