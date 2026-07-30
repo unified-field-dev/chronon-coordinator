@@ -60,9 +60,9 @@ match_same_arms = "allow"
 anyhow = "1"
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
-chronon-core = { git = "https://github.com/deathbreakfast/chronon", rev = "9ba7fdab4c81280c112f37b107a5c0480967dde7" }
-chronon-executor = { git = "https://github.com/deathbreakfast/chronon", rev = "9ba7fdab4c81280c112f37b107a5c0480967dde7" }
-chronon-scheduler = { git = "https://github.com/deathbreakfast/chronon", rev = "9ba7fdab4c81280c112f37b107a5c0480967dde7" }
+chronon-core = { git = "https://github.com/unified-field-dev/chronon", rev = "6c9ec6dfe7e4343269cfb336ae9773e7e180cddb" }
+chronon-executor = { git = "https://github.com/unified-field-dev/chronon", rev = "6c9ec6dfe7e4343269cfb336ae9773e7e180cddb" }
+chronon-scheduler = { git = "https://github.com/unified-field-dev/chronon", rev = "6c9ec6dfe7e4343269cfb336ae9773e7e180cddb" }
 log = "0.4"
 quark = { package = "uf-quark", version = "0.1.1" }
 serde = { version = "1", features = ["derive"] }

@@ -129,7 +129,7 @@ dependencies = [
 [[package]]
 name = "chronon-core"
 version = "0.1.2"
-source = "git+https://github.com/deathbreakfast/chronon?rev=9ba7fdab4c81280c112f37b107a5c0480967dde7#9ba7fdab4c81280c112f37b107a5c0480967dde7"
+source = "git+https://github.com/unified-field-dev/chronon?rev=6c9ec6dfe7e4343269cfb336ae9773e7e180cddb#6c9ec6dfe7e4343269cfb336ae9773e7e180cddb"
 dependencies = [
  "async-trait",
  "chrono",
@@ -143,7 +143,7 @@ dependencies = [
 [[package]]
 name = "chronon-executor"
 version = "0.1.2"
-source = "git+https://github.com/deathbreakfast/chronon?rev=9ba7fdab4c81280c112f37b107a5c0480967dde7#9ba7fdab4c81280c112f37b107a5c0480967dde7"
+source = "git+https://github.com/unified-field-dev/chronon?rev=6c9ec6dfe7e4343269cfb336ae9773e7e180cddb#6c9ec6dfe7e4343269cfb336ae9773e7e180cddb"
 dependencies = [
  "chrono",
  "chronon-core",
@@ -158,7 +158,7 @@ dependencies = [
 [[package]]
 name = "chronon-scheduler"
 version = "0.1.2"
-source = "git+https://github.com/deathbreakfast/chronon?rev=9ba7fdab4c81280c112f37b107a5c0480967dde7#9ba7fdab4c81280c112f37b107a5c0480967dde7"
+source = "git+https://github.com/unified-field-dev/chronon?rev=6c9ec6dfe7e4343269cfb336ae9773e7e180cddb#6c9ec6dfe7e4343269cfb336ae9773e7e180cddb"
 dependencies = [
  "chrono",
  "chrono-tz",
@@ -176,7 +176,7 @@ dependencies = [
 [[package]]
 name = "chronon-telemetry"
 version = "0.1.2"
-source = "git+https://github.com/deathbreakfast/chronon?rev=9ba7fdab4c81280c112f37b107a5c0480967dde7#9ba7fdab4c81280c112f37b107a5c0480967dde7"
+source = "git+https://github.com/unified-field-dev/chronon?rev=6c9ec6dfe7e4343269cfb336ae9773e7e180cddb#6c9ec6dfe7e4343269cfb336ae9773e7e180cddb"
 dependencies = [
  "parking_lot",
  "tracing",
