@@ -41,5 +41,4 @@ cargo doc --no-deps
   [`ChrononError`](https://docs.rs/chronon-core) / `anyhow` (no ordinary-path unwrap).
   `register_default_jobs_embedded*` intentionally logs and swallows errors for
   fire-and-forget boot.
-- Sad-path assertions check typed variants or message content — not smoke-only
-  `is_err()`.
+- Sad-path assertions check typed variants or message content — (stronger than `is_err()` alone).
