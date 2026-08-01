@@ -115,15 +115,27 @@ dependencies = [
  "anyhow",
  "async-trait",
  "chrono",
+ "chronon-coordinator-macros",
  "chronon-core",
  "chronon-executor",
  "chronon-scheduler",
+ "chronon-valence-identity",
  "log",
  "serde",
  "serde_json",
  "tokio",
  "uf-quark",
  "uf-valence",
+]
+
+[[package]]
+name = "chronon-coordinator-macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde_json",
+ "syn 2.0.119",
 ]
 
 [[package]]
@@ -181,6 +193,15 @@ dependencies = [
  "parking_lot",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "chronon-valence-identity"
+version = "0.1.0"
+dependencies = [
+ "chronon-core",
+ "serde_json",
+ "uf-valence",
 ]
 
 [[package]]

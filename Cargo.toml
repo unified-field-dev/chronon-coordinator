@@ -71,3 +71,11 @@ valence = { package = "uf-valence", git = "https://github.com/unified-field-dev/
 
 [dev-dependencies]
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+chronon-coordinator-macros = { path = "../chronon-coordinator-macros" }
+chronon-valence-identity = { path = "../chronon-valence-identity" }
+
+[[example]]
+name = "register_default_jobs_embedded"
+
+[[example]]
+name = "script_with_default_job"
