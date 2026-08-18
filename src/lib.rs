@@ -47,7 +47,7 @@
 //! [`Scheduler`] wraps the upstream [`ScriptRegistry`] and works from link-time inventory alone —
 //! inventory alone is enough:
 //!
-//! ```rust,ignore
+//! ```rust,no_run
 //! use chronon_coordinator::Scheduler;
 //!
 //! let scheduler = Scheduler::from_inventory();
