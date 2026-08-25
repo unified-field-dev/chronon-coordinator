@@ -17,20 +17,19 @@
 //!
 //! ## Features
 //!
-//! - **Object-safe backend trait** — [`ChrononCoordinatorBackend`] is `dyn`-compatible, so hosts
-//!   hold `Arc<dyn ChrononCoordinatorBackend>` without caring how jobs, runs, and revisions are
-//!   persisted or executed
-//! - **Valence job builder** — [`JobBuilder`] delegates cron / run-once / manual construction to
-//!   Chronon ([`chronon_scheduler::JobBuilder`]) and snapshots Valence into `actor_json`
-//! - **Typed scheduling helpers** — [`ScriptScheduler`] wraps [`JobBuilder`] with a bound backend
-//!   for a one-line `.add()`; [`typed_job_ref_for_script`] / [`TypedJobRef`] resolve an existing
-//!   job by name and support typed one-off parameter override on [`TypedJobRef::run_now`]
-//! - **Script discovery handle** — [`Scheduler`] exposes the upstream [`ScriptRegistry`] for script
-//!   discovery in host / UI server functions, independent of any running Chronon runtime
-//! - **Default-job bootstrap** — [`ensure_default_jobs_embedded`] (and the
-//!   [`register_default_jobs_embedded`] wrapper below) upsert every job discovered via
-//!   `#[chronon_coordinator_macros::script(..., default_job(...))]` inventory, so default jobs stay
-//!   in sync as scripts are added, removed, or have their schedule attributes changed
+//! - **Script discovery** — List every script registered through
+//!   `#[chronon_coordinator_macros::script]` inventory without a running backend or coordinator.
+//!   [Get started](#discover-scripts)
+//! - **Job scheduling** — Build cron, run-once, or manual jobs with Valence lineage via
+//!   [`JobBuilder`] or persist in one chain with [`ScriptScheduler`].
+//!   [Get started](#build-and-schedule-a-job)
+//! - **Run job now** — Trigger an immediate run through
+//!   [`ChrononCoordinatorBackend::run_now`] or a typed [`TypedJobRef`].
+//!   [Get started](#run-a-job-now)
+//! - **Default-job bootstrap** — Upsert default jobs from macro inventory on every host boot so
+//!   schedules stay aligned with code. [Get started](#bootstrap-default-jobs-at-boot)
+//! - **Coordinator backend** — [`ChrononCoordinatorBackend`] admin trait (upsert, list, pause,
+//!   run-now) for portable product code ([`ChrononCoordinatorBackend`] API reference)
 //!
 //! *One coordinator trait — the same product code administers and inspects Chronon jobs whether
 //! they run in this process or behind a split runtime. Schedule fluent API stays in Chronon.*
@@ -44,25 +43,33 @@
 //!
 //! ## Discover scripts
 //!
-//! [`Scheduler`] wraps the upstream [`ScriptRegistry`] and works from link-time inventory alone —
-//! inventory alone is enough:
+//! [`Scheduler`] wraps the upstream [`ScriptRegistry`] and reads link-time inventory only. Host
+//! UIs and admin server functions call this before any Chronon runtime starts.
+//!
+//! Prerequisites: scripts registered with `#[chronon_coordinator_macros::script]` in linked
+//! crates.
 //!
 //! ```rust,no_run
 //! use chronon_coordinator::Scheduler;
 //!
 //! let scheduler = Scheduler::from_inventory();
 //! let names = scheduler.list_scripts();
-//! # let _ = names;
+//! assert!(!names.is_empty(), "linked inventory must expose at least one script");
 //! ```
+//!
+//! Next: [Build and schedule a job](#build-and-schedule-a-job) once you hold a
+//! [`ChrononCoordinatorBackend`].
 //!
 //! ## Build and schedule a job
 //!
-//! Use [`JobBuilder`] when you hold a [`Valence`](valence::Valence) context, or
-//! [`ScriptScheduler`] to build and persist in one chain. Schedule fluent API lives in Chronon;
-//! this crate adds Valence lineage:
+//! [`JobBuilder`] wraps upstream [`chronon_scheduler::JobBuilder`] with Valence snapshots.
+//! [`ScriptScheduler`] binds a backend so `.add()` builds and persists in one async call.
+//!
+//! Prerequisites: a [`ChrononCoordinatorBackend`] handle, a [`ScriptHandle`] for the target
+//! script, and a [`Valence`](valence::Valence) context.
 //!
 //! ```rust,ignore
-//! # async fn wire(
+//! # async fn wire_job_builder(
 //! #     backend: &dyn chronon_coordinator::ChrononCoordinatorBackend,
 //! #     handle: chronon_core::ScriptHandle<()>,
 //! #     valence: valence::Valence,
@@ -70,32 +77,103 @@
 //! use chronon_coordinator::JobBuilder;
 //!
 //! let job = JobBuilder::new(&handle)
-//!     .with_valence(valence)
+//!     .with_valence(valence.clone())
 //!     .name("nightly-report")
 //!     .cron("0 0 * * * *")?
 //!     .build()?;
 //! backend.upsert_job_with_valence(&valence, job).await?;
+//! let stored = backend
+//!     .get_job_by_name("nightly-report")
+//!     .await
+//!     .expect("upserted job must be readable");
+//! assert_eq!(stored.job_name, "nightly-report");
 //! # Ok(())
 //! # }
 //! ```
 //!
+//! One-chain variant with [`ScriptScheduler`]:
+//!
+//! ```rust,ignore
+//! # async fn wire_script_scheduler(
+//! #     backend: &dyn chronon_coordinator::ChrononCoordinatorBackend,
+//! #     handle: chronon_core::ScriptHandle<()>,
+//! #     valence: valence::Valence,
+//! # ) -> chronon_coordinator::Result<()> {
+//! use chronon_coordinator::ScriptScheduler;
+//!
+//! let job = ScriptScheduler::new(backend, handle, valence)
+//!     .name("nightly-report")
+//!     .cron("0 0 * * * *")?
+//!     .add()
+//!     .await?;
+//! assert_eq!(job.job_name, "nightly-report");
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! Next: [Run a job now](#run-a-job-now) to fire a manual run without waiting for cron.
+//!
 //! ## Run a job now
+//!
+//! [`ChrononCoordinatorBackend::run_now`] enqueues a `queued` run immediately; workers claim it
+//! on the next poll. Use [`TypedJobRef::run_now`] when you need typed parameter override on an
+//! existing job resolved through [`typed_job_ref_for_script`].
+//!
+//! Prerequisites: a persisted job id or a job name resolved through [`typed_job_ref_for_script`].
 //!
 //! ```rust,ignore
 //! # async fn run(backend: &dyn chronon_coordinator::ChrononCoordinatorBackend) -> chronon_coordinator::Result<()> {
 //! let run_id = backend.run_now("job-id").await?;
-//! # let _ = run_id;
+//! assert!(!run_id.is_empty(), "run_now must return a run id");
 //! # Ok(())
 //! # }
 //! ```
 //!
+//! Typed variant:
+//!
+//! ```rust,ignore
+//! # async fn run_typed(backend: &dyn chronon_coordinator::ChrononCoordinatorBackend) -> chronon_coordinator::Result<()> {
+//! use chronon_coordinator::typed_job_ref_for_script;
+//!
+//! let job_ref = typed_job_ref_for_script::<()>(backend, "nightly-report", "send_report").await?;
+//! let run_id = job_ref.run_now().await?;
+//! assert!(run_id.starts_with("run-"), "run id must be persisted");
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! Next: [Bootstrap default jobs at boot](#bootstrap-default-jobs-at-boot) so inventory-declared
+//! schedules exist before workers start.
+//!
 //! ## Bootstrap default jobs at boot
 //!
-//! Safe to call on every boot: existing rows are updated in place when a default job's schedule
-//! drifts from its `#[chronon_coordinator_macros::script(..., default_job(...))]` attributes.
+//! Call [`ensure_default_jobs_embedded`] once at host boot after the coordinator backend is wired
+//! and before workers dequeue runs. The call upserts every job from
+//! `#[chronon_coordinator_macros::script(..., default_job(...))]` inventory and repairs schedule
+//! drift on restart.
+//!
+//! Prerequisites: a [`ChrononCoordinatorBackend`] handle and a Valence factory closure (or use
+//! [`register_default_jobs_embedded`] for fire-and-forget boot code). Skip hand-managed jobs with
+//! [`ensure_default_jobs_embedded_with_skip`].
 //!
 //! ```rust,ignore
 //! # async fn boot(
+//! #     backend: std::sync::Arc<dyn chronon_coordinator::ChrononCoordinatorBackend>,
+//! #     build_valence: impl FnMut() -> anyhow::Result<valence::Valence>,
+//! # ) -> anyhow::Result<()> {
+//! use chronon_coordinator::{ensure_default_jobs_embedded, ChrononCoordinatorBackend};
+//!
+//! ensure_default_jobs_embedded(backend.clone(), build_valence).await?;
+//! let jobs = backend.list_jobs().await?;
+//! assert!(!jobs.is_empty(), "default jobs must be seeded from inventory");
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! Fire-and-forget boot wrapper (errors logged, not propagated):
+//!
+//! ```rust,ignore
+//! # async fn boot_fire_and_forget(
 //! #     backend: std::sync::Arc<dyn chronon_coordinator::ChrononCoordinatorBackend>,
 //! #     factory: std::sync::Arc<dyn valence::ValenceFactory>,
 //! # ) {
@@ -103,16 +181,7 @@
 //! # }
 //! ```
 //!
-//! ## Concern → API
-//!
-//! | Concern | API |
-//! |---------|-----|
-//! | Backend-agnostic job/run/revision admin | [`ChrononCoordinatorBackend`] — the trait every host adapter implements |
-//! | Build a job with Valence (Chronon schedule + identity) | [`JobBuilder`] — Valence wrapper over [`chronon_scheduler::JobBuilder`] |
-//! | Build-and-persist in one chain | [`ScriptScheduler`] — [`JobBuilder`] bound to a backend |
-//! | Look up / run-now an existing job by name | [`typed_job_ref_for_script`] / [`TypedJobRef`] |
-//! | Discover scripts without a running backend | [`Scheduler`] — handle over the upstream [`ScriptRegistry`] |
-//! | Seed jobs at boot from `#[chronon_coordinator_macros::script]` inventory | [`ensure_default_jobs_embedded`] / [`register_default_jobs_embedded`] |
+//! Runnable example: `cargo run -p chronon-coordinator --example register_default_jobs_embedded`.
 //!
 //! Older import path: [`models`].
 //!
