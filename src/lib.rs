@@ -23,10 +23,10 @@
 //! - **Job scheduling** — Build cron, run-once, or manual jobs with Valence lineage via
 //!   [`JobBuilder`] or persist in one chain with [`ScriptScheduler`].
 //!   [Get started](#build-and-schedule-a-job)
-//! - **Run job now** — Trigger an immediate run through
+//! - **Immediate run** — Trigger an immediate run through
 //!   [`ChrononCoordinatorBackend::run_now`] or a typed [`TypedJobRef`].
 //!   [Get started](#run-a-job-now)
-//! - **Default-job bootstrap** — Upsert default jobs from macro inventory on every host boot so
+//! - **Default job seeding** — Upsert default jobs from macro inventory on every host boot so
 //!   schedules stay aligned with code. [Get started](#bootstrap-default-jobs-at-boot)
 //! - **Coordinator backend** — [`ChrononCoordinatorBackend`] admin trait (upsert, list, pause,
 //!   run-now) for portable product code ([`ChrononCoordinatorBackend`] API reference)
