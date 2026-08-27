@@ -125,7 +125,7 @@ dependencies = [
  "serde_json",
  "tokio",
  "uf-quark",
- "uf-valence 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "uf-valence",
 ]
 
 [[package]]
@@ -141,8 +141,9 @@ dependencies = [
 
 [[package]]
 name = "chronon-core"
-version = "0.1.3"
-source = "git+https://github.com/unified-field-dev/chronon?tag=v0.1.3#c43e16dbec81d3cab4bd77be2a2fc056cbaa220d"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83ca533f3d2e2cca601e120dd8876c19faa7c3b66924b2c0382a3a7e06812d6d"
 dependencies = [
  "async-trait",
  "chrono",
@@ -155,8 +156,9 @@ dependencies = [
 
 [[package]]
 name = "chronon-executor"
-version = "0.1.3"
-source = "git+https://github.com/unified-field-dev/chronon?tag=v0.1.3#c43e16dbec81d3cab4bd77be2a2fc056cbaa220d"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "15178cd66c35e5f28aa38ba8ea81aaed29113f90cecb0650fccf5c6ca620805a"
 dependencies = [
  "chrono",
  "chronon-core",
@@ -170,8 +172,9 @@ dependencies = [
 
 [[package]]
 name = "chronon-scheduler"
-version = "0.1.3"
-source = "git+https://github.com/unified-field-dev/chronon?tag=v0.1.3#c43e16dbec81d3cab4bd77be2a2fc056cbaa220d"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b8da9f2f981e127fc282baba208303d0015575fe2662e96d8033d2839525513a"
 dependencies = [
  "chrono",
  "chrono-tz",
@@ -188,8 +191,9 @@ dependencies = [
 
 [[package]]
 name = "chronon-telemetry"
-version = "0.1.3"
-source = "git+https://github.com/unified-field-dev/chronon?tag=v0.1.3#c43e16dbec81d3cab4bd77be2a2fc056cbaa220d"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "be13fc462fd8e44aec57cf8363fc398c6fc4a07127883ed229472c2c573bba48"
 dependencies = [
  "parking_lot",
  "tracing",
@@ -199,11 +203,11 @@ dependencies = [
 [[package]]
 name = "chronon-valence-identity"
 version = "0.1.0"
-source = "git+https://github.com/unified-field-dev/chronon-valence-identity#25304810ef6fd8852e44f779b877427f73680936"
+source = "git+https://github.com/deathbreakfast/chronon-valence-identity?branch=pin-published-l0#df55f7834582c8a99e231139f7dfe2337832018b"
 dependencies = [
  "chronon-core",
  "serde_json",
- "uf-valence 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
+ "uf-valence",
 ]
 
 [[package]]
@@ -767,53 +771,32 @@ dependencies = [
 
 [[package]]
 name = "uf-valence"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ab3fb870f9d861c8403736848281c1dd85318da49e6af9eb23798cb2fdd3206"
+checksum = "7a49c7bf2889e9abc13c3015ff185a71bbd275c63bacec1773f44f231cb774ec"
 dependencies = [
- "uf-valence-backend-mem 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "uf-valence-core 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "uf-valence-macros 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "uf-valence"
-version = "0.1.4"
-source = "git+https://github.com/unified-field-dev/valence?tag=v0.1.4#a671abf3029ad945d7755d26c2578a2a8195c96b"
-dependencies = [
- "uf-valence-backend-mem 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
- "uf-valence-core 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
- "uf-valence-macros 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
+ "uf-valence-backend-mem",
+ "uf-valence-core",
+ "uf-valence-macros",
 ]
 
 [[package]]
 name = "uf-valence-backend-mem"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b982bf102e9c996933e753ffe0885ec154f9fe96bf4720b6a4533946170eb21a"
+checksum = "c843bb8e05027d51f0c197f023faf7c9dc6f71a62db5c57fc9b9afa5a54479b1"
 dependencies = [
  "async-trait",
  "serde_json",
  "tokio",
- "uf-valence-core 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "uf-valence-backend-mem"
-version = "0.1.4"
-source = "git+https://github.com/unified-field-dev/valence?tag=v0.1.4#a671abf3029ad945d7755d26c2578a2a8195c96b"
-dependencies = [
- "async-trait",
- "serde_json",
- "tokio",
- "uf-valence-core 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
+ "uf-valence-core",
 ]
 
 [[package]]
 name = "uf-valence-core"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c6d011401f604afc430a17cd8a1ffe69b3f690e03e6c7cb817e38e616bf5abd"
+checksum = "002bf881db2a03a1cd104ccfb9fd1449c7a6c059d659ffc9457554469bf357ea"
 dependencies = [
  "async-trait",
  "chrono",
@@ -825,67 +808,27 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
- "uf-valence-telemetry 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "uuid",
-]
-
-[[package]]
-name = "uf-valence-core"
-version = "0.1.4"
-source = "git+https://github.com/unified-field-dev/valence?tag=v0.1.4#a671abf3029ad945d7755d26c2578a2a8195c96b"
-dependencies = [
- "async-trait",
- "chrono",
- "inventory",
- "quick_cache",
- "regex",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tracing",
- "uf-valence-telemetry 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
+ "uf-valence-telemetry",
  "uuid",
 ]
 
 [[package]]
 name = "uf-valence-macros"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3856f428cc5ec903ea9288a52e04d9211dd8b34d83c92d76e20daab698bc0a08"
+checksum = "7d761863d394642003dcece088561a2cc9340133bc084cb4d455bfd5d408956a"
 dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.119",
- "uf-valence-schema-dsl 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "uf-valence-macros"
-version = "0.1.4"
-source = "git+https://github.com/unified-field-dev/valence?tag=v0.1.4#a671abf3029ad945d7755d26c2578a2a8195c96b"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.119",
- "uf-valence-schema-dsl 0.1.4 (git+https://github.com/unified-field-dev/valence?tag=v0.1.4)",
+ "uf-valence-schema-dsl",
 ]
 
 [[package]]
 name = "uf-valence-schema-dsl"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5489cff73d906d4c28b820d9b034edc4844cc4886a1042f395141ed79ee1589e"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.119",
-]
-
-[[package]]
-name = "uf-valence-schema-dsl"
-version = "0.1.4"
-source = "git+https://github.com/unified-field-dev/valence?tag=v0.1.4#a671abf3029ad945d7755d26c2578a2a8195c96b"
+checksum = "50d3b322bb1112632d4c3c1dd554b2f04278ca176ecbcf41a1f652c75d5daf6a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -894,17 +837,9 @@ dependencies = [
 
 [[package]]
 name = "uf-valence-telemetry"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af28e64e73b9118bc84b75b18a582e452e4d83269993aa02ebdc98518493372a"
-dependencies = [
- "serde_json",
-]
-
-[[package]]
-name = "uf-valence-telemetry"
-version = "0.1.4"
-source = "git+https://github.com/unified-field-dev/valence?tag=v0.1.4#a671abf3029ad945d7755d26c2578a2a8195c96b"
+checksum = "32bc3941eb301b6232606dc24659c6e8f15d077c93532d235862b1938dc463d7"
 dependencies = [
  "serde_json",
 ]
