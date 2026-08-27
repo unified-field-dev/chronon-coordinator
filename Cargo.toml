@@ -72,7 +72,7 @@ valence = { package = "uf-valence", version = "0.1.5", default-features = false,
 [dev-dependencies]
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 chronon-coordinator-macros = { git = "https://github.com/unified-field-dev/chronon-coordinator-macros" }
-chronon-valence-identity = { git = "https://github.com/unified-field-dev/chronon-valence-identity" }
+chronon-valence-identity = { git = "https://github.com/deathbreakfast/chronon-valence-identity", branch = "pin-published-l0" }
 
 [[example]]
 name = "register_default_jobs_embedded"
