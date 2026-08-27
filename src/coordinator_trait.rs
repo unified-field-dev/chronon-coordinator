@@ -32,6 +32,12 @@ use valence::Valence;
 /// # Ok(())
 /// # }
 /// ```
+///
+/// # Errors
+///
+/// Methods returning [`Result`] propagate [`chronon_core::ChrononError`] from the backing
+/// store or coordinator runtime (validation failures, persistence errors, missing jobs). Methods
+/// returning `Option` use `None` for not-found rows without an error.
 #[async_trait]
 pub trait ChrononCoordinatorBackend: Send + Sync {
     /// Load all jobs from the backing store into memory (in-process backends only; a no-op for
